@@ -1,4 +1,4 @@
-import icon from '../images/chef-claude-icon.png'
+import icon from '../assets/chef-claude-icon.png'
 
 export default function Header() {
   return (
