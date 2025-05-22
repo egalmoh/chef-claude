@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ClaudeRecipe from './ClaudeRecipe.jsx'
 import IngredientsList from './IngredientsList.jsx'
 import { getRecipeFromDeepseek } from '../ai.js'
@@ -8,6 +8,24 @@ export default function Main() {
   const [ingredients, setIngredients] = useState([])
 
   const [recipe, setRecipe] = useState('')
+  const recipeSection = useRef(null)
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleGetRecipe() {
+    setIsLoading(true);
+    try {
+      await getRecipe();
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (recipeSection.current) {
+      recipeSection.current.scrollIntoView({behavior: "smooth"})
+    }
+  }, [recipe])
 
   function addIngredient(formData) {
     const newIngredient = formData.get("ingredient")
@@ -40,6 +58,7 @@ export default function Main() {
       {
         ingredients.length > 0 
         ? <IngredientsList 
+          ref={recipeSection}
           deleteIngredient={deleteIngredient}
           ingredients={ingredients} 
           getRecipe={getRecipe} 

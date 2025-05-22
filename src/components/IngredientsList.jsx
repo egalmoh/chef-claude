@@ -1,8 +1,21 @@
+import { useState } from "react";
+
 export default function IngredientsList(props) {
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleGetRecipe() {
+    setIsLoading(true);
+    try {
+      await props.getRecipe();
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   let ingElements = props.ingredients.map((ing) => {
     return (
-      <li key={ing}>{ing}<button onClick={() => props.deleteIngredient(ing)}>delete</button></li>
+      <li key={ing}>{ing}<button onClick={() => props.deleteIngredient(ing)}>Delete</button></li>
       
     )
   })
@@ -15,11 +28,21 @@ export default function IngredientsList(props) {
       </ul>
       {
         props.ingredients.length > 3 && <div className="get-recipe-container">
-        <div>
-          <h3>Ready for a recipe?</h3>
-          <p>Generate a recipe from your list of ingredients.</p>
+        <div ref={props.ref}>
+        {
+          isLoading ?
+          <div>
+          <h3>Your recipe is loading please wait.</h3>
+          </div>
+          : <div>
+            <h3>Ready for a recipe?</h3>
+            <p>Generate a recipe from your list of ingredients.</p>
+          </div>
+        } 
         </div>
-          <button onClick={props.getRecipe}>Get a recipe</button>
+          {isLoading ? <span className="loader"></span> : <button onClick={handleGetRecipe} disabled={isLoading}>
+            Get Recipe
+          </button>}
         </div>
       }
     </section>

@@ -150,3 +150,46 @@ li > button {
     flex-direction: column;
     min-height: 100vh;
 }
+
+.loader {
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #D17557;
+  border-radius: 100%; /* Use 50% for a perfect circle */
+  width: 45px;
+  height: 45px;
+  animation: spin 1.2s linear infinite; /* Adjust timing for smoothness */
+  display: inline-block;
+  position: relative; /* Required for the tail effect */
+}
+
+/* The thinner "tail" */
+.loader::before {
+  content: "";
+  position: absolute;
+  top: -2px; /* Adjust position */
+  left: -2px; /* Adjust position */
+  right: -2px; /* Adjust position */
+  bottom: -2px; /* Adjust position */
+  border-radius: 100%;
+  border: 2px solid transparent; /* Thinner tail */
+  border-top-color: #D17557;
+  animation: tailSpin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tailSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
